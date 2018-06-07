@@ -3,9 +3,11 @@
 const express    = require('express');
 const app        = express();
 const bodyParser = require('body-parser');
+const cors       = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
 const port = process.env.PORT || 8080;        // set our port
 
@@ -15,12 +17,14 @@ mongoose.connect(
   process.env.MONGO_URL ||
   'mongodb://localhost:27017/jobtest'
 , (err)=>{
-  if(!err) console.log('Connected to MongoDB');
+  if(!err) {
+    console.log('Connected to MongoDB');
+
+    // Start cronjobs
+    const runningCronJobs = require('./app/cronjobs').start();
+  }
   else console.log('DB connection failure: ', err);
 });
-
-// Start cronjobs
-const runningCronJobs = require('./app/cronjobs').start();
 
 // Apply Routes
 app.use('/api', require('./app/routes'));
