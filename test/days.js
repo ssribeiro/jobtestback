@@ -91,7 +91,7 @@ describe('Days', () => {
         weekday: Util.localeWeekName(theDate.weekday()),
         orderFromToday: -1,
       }
-      console.log('tomorrow is:', tomorrow);
+      console.log('yesterday is:', tomorrow);
       chai.request(server)
         .get('/api/days')
         .end((err, res) => {
