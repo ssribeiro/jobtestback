@@ -1,5 +1,18 @@
 const DayModel = require('../models/day');
 
+const generateDays = () => {
+  console.log('generating days..');
+
+};
+
+const todayIsWrong = () => {
+  return false;
+};
+
+const turnDays = () => {
+  console.log('turning days..');
+};
+
 const DaysController = {
   name: 'days',
   list: (req, res) => {
@@ -18,7 +31,12 @@ const DaysController = {
     console.log('updating days...');
   },
   turnDays: () => {
-    console.log('turning days...');
+    DayModel.find((err, days) => {
+      if(err) console.log('turning days error in model access.');
+      else if(days.length == 0) generateDays();
+      else if(todayIsWrong()) turnDays();
+      else console.log('day not tuned yet. leaving days alone.');
+    });
   },
 };
 

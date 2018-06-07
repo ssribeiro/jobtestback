@@ -23,7 +23,7 @@ const DaySchema  = new Schema({
     day: Number,
     month: String,
     weekday: String,
-    amountOfAThing: Number,
+    relativeHumidity: Number,
 });
 
 module.exports = mongoose.model('Day', DaySchema);
