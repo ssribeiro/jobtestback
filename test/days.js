@@ -37,8 +37,8 @@ describe('Days', () => {
           res.should.have.status(200);
           res.body.should.be.a('array');
           res.body.length.should.be.eql(5);
-        done();
-      });
+          done();
+        });
     });
 
     it('it should include today', (done) => {
@@ -50,8 +50,8 @@ describe('Days', () => {
           const theDay = res.body.filter(day=>day.day==today.day)[0];
           theDay.month.should.be.deep.equal(today.month);
           theDay.weekday.should.be.deep.equal(today.weekday);
-        done();
-      });
+          done();
+        });
     });
 
     it('it should say that today is at order ZERO', (done) => {
@@ -61,8 +61,8 @@ describe('Days', () => {
         .end((err, res) => {
           const theDay = res.body.filter(day=>day.day==today.day)[0];
           theDay.orderFromToday.should.be.deep.equal(0);
-        done();
-      });
+          done();
+        });
     });
 
     it('it should say that tomorrow is at order ONE', (done) => {
@@ -79,8 +79,8 @@ describe('Days', () => {
         .end((err, res) => {
           const theDay = res.body.filter(day=>day.day==tomorrow.day)[0];
           theDay.orderFromToday.should.be.deep.equal(1);
-        done();
-      });
+          done();
+        });
     });
 
     it('it should say that yesterday is at order ONE MINUS', (done) => {
@@ -97,8 +97,25 @@ describe('Days', () => {
         .end((err, res) => {
           const theDay = res.body.filter(day=>day.day==tomorrow.day)[0];
           theDay.orderFromToday.should.be.deep.equal(-1);
-        done();
-      });
+          done();
+        });
+    });
+
+  });
+
+  describe('/GET/:id days', () => {
+
+    it('it should GET a day by the given day number', (done) => {
+      chai.request(server)
+        .get('/api/days/' + today.day)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('day').eql(today.day);
+          res.body.should.have.property('weekday').eql(today.weekday);
+          res.body.should.have.property('month').eql(today.month);
+          done();
+        });
     });
 
   });

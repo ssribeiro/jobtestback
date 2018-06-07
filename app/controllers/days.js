@@ -11,9 +11,9 @@ const DaysController = {
     });
   },
   find: (req, res) => {
-    DayModel.findByDay(req.params.day, function(err, day) {
+    DayModel.findByDay(req.params.id, function(err, day) {
       if(err) res.send(err);
-      res.json(day);
+      res.json(day[0]);
     });
   },
   updateDays: () => {
