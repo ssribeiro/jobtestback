@@ -7,5 +7,5 @@ Job Test Calendar Climate Backend
 ```docker-compose up```
 
 
-```npm start```
+```nodemon```
 
