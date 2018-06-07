@@ -3,7 +3,7 @@ const Schema  = mongoose.Schema;
 
 const DaySchema  = new Schema({
     day: Number,
-    month: String,
+    month: Number,
     weekday: String,
     orderFromToday: Number,
     relativeHumidity: Number,

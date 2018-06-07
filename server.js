@@ -28,3 +28,5 @@ app.use('/api', require('./app/routes'));
 // Start
 app.listen(port);
 console.log('Serving on port ' + port);
+
+module.exports = app;
