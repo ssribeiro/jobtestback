@@ -1,16 +1,18 @@
-const util = {
-  //function to add days to a given date.
-  addDays: (startDate,numberOfDays) => {
-		let returnDate = new Date(
-      startDate.getFullYear(),
-			startDate.getMonth(),
-			startDate.getDate()+numberOfDays,
-			startDate.getHours(),
-			startDate.getMinutes(),
-			startDate.getSeconds()
-    );
-		return returnDate;
-	}
-};
+module.exports = {
 
-module.exports = util;
+  moment: require('moment'),
+
+  localeWeekName: (number) => {
+    switch(number) {
+      case 7: return 'sunday';
+      case 1: return 'monday';
+      case 2: return 'tuesday';
+      case 3: return 'wednesday';
+      case 4: return 'thursday';
+      case 5: return 'friday';
+      case 6: return 'saturday';
+      default: return 'sunday';
+    }
+  },
+  
+};

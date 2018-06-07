@@ -23,7 +23,10 @@ const DaySchema  = new Schema({
     day: Number,
     month: String,
     weekday: String,
+    orderFromToday: Number,
     relativeHumidity: Number,
 });
+
+DaySchema.statics.findByDay = function(day, cb) { return this.find({ day }, cb); };
 
 module.exports = mongoose.model('Day', DaySchema);
