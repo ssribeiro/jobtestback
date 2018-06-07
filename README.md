@@ -1,11 +1,11 @@
 # jobtestback
 Job Test Calendar Climate Backend
 
-´´´nvm use´´´
+```nvm use```
 
 
-´´´docker-compose up´´´
+```docker-compose up```
 
 
-´´´npm start´´´
+```npm start```
 
