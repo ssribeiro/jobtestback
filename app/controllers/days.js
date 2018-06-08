@@ -7,7 +7,11 @@ const DaysController = {
   list: (req, res) => {
     DayModel.find(function(err, days) {
       if(err) res.send(err);
-      res.json(days);
+      res.json(days.sort(function(a, b){
+        if(a.orderFromToday < b.orderFromToday) return -1;
+        if(a.orderFromToday > b.orderFromToday) return 1;
+        return 0;
+      }));
     });
   },
   find: (req, res) => {
