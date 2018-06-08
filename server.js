@@ -1,4 +1,5 @@
 // server.js
+const env = require('./env');
 
 const express    = require('express');
 const app        = express();
@@ -32,8 +33,17 @@ mongoose.connect(
 // Apply Routes
 app.use('/api', require('./app/routes'));
 
-// Start
-app.listen(port);
+// Start;
+if(!env.production) app.listen(port);
+else {
+  const fs = require('fs');
+  const sslOptions = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+  };
+  const https = require('https');
+  https.createServer(sslOptions, app).listen(8080);
+}
 console.log('Serving on port ' + port);
 
 module.exports = app;
