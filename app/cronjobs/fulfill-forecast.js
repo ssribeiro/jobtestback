@@ -5,6 +5,6 @@ module.exports = {
     ForecastsController.generateForecasts();
     return setInterval(()=>{ // update days information
       ForecastsController.generateForecasts();
-    }, 1*60*60*1000); // each hour
+    }, 3*60*60*1000); // each 3 hours
   },
 };
