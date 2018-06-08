@@ -14,7 +14,19 @@ const DaysController = {
   find: (req, res) => {
     DayModel.findByDay(req.params.id, function(err, day) {
       if(err) res.send(err);
-      res.json(day[0]);
+      else if(!!day){
+        ForecastModel.forDay(day, (err, forecasts)=>{
+          if(err) res.send(err);
+          else {
+            let day_weather = Object.assign({},
+              { day: day.day },
+              { weather: ForecastModel.spreadInCities(forecasts) }
+            );
+            res.json(day_weather);
+          }
+        });
+      }
+      else res.json({ error: 'outside scope'});
     });
   },
   updateDays: () => {

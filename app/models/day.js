@@ -30,7 +30,11 @@ DaySchema.statics.allSorted = function(cb) {
   });
 };
 
-DaySchema.statics.findByDay = function(day, cb) { return this.find({ day }, cb); };
+DaySchema.statics.findByDay = function(day, cb) { return this.find({ day }, (err, days)=>{
+  if(err) cb(err);
+  else if(days) cb(null, days[0]);
+  else cb(null, null);
+}); };
 
 DaySchema.statics.dropAllDays = function(cb) { return this.remove({}, cb); };
 
@@ -65,10 +69,10 @@ DaySchema.statics.generateDays = function(cb) {
 
 DaySchema.statics.todayIsWrong = function(cb) {
   const today = Util.moment();
-  this.findByDay(today.date(), function(err, daysFound) {
+  this.findByDay(today.date(), function(err, dayFound) {
     if(err) cb(err);
     else {
-      const day = daysFound[0];
+      const day = dayFound;
       if( day.orderFromToday != 0 ||
           day.month != (today.month()+1) ||
           day.weekday != Util.localeWeekName(today.weekday()) )

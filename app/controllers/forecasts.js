@@ -21,7 +21,6 @@ const ForecastsController = {
   },
   parseProvidedForecast: (provided) => {
     const city = provided.city;
-    console.log(provided);
     const time_stamp = Util.moment(+provided.dt*1000).valueOf();
     const main_information = provided.main;
     return { city, time_stamp, main_information };

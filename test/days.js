@@ -112,8 +112,7 @@ describe('Days', () => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('day').eql(today.day);
-          res.body.should.have.property('weekday').eql(today.weekday);
-          res.body.should.have.property('month').eql(today.month);
+          res.body.should.have.property('weather');
           done();
         });
     });
