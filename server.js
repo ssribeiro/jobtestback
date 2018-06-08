@@ -38,8 +38,8 @@ if(!env.production) app.listen(port);
 else {
   const fs = require('fs');
   const sslOptions = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
+    key: fs.readFileSync(env.ssl_key_path),
+    cert: fs.readFileSync(env.ssl_cert_path)
   };
   const https = require('https');
   https.createServer(sslOptions, app).listen(8080);
