@@ -1,6 +1,7 @@
 const cronjobs = [
   require('./update-days'),
   require('./turn-days'),
+  require('./fulfill-forecast'),
 ];
 
 module.exports = {

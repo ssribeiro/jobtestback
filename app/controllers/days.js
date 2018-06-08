@@ -1,17 +1,14 @@
 const DayModel = require('../models/day');
+const ForecastModel = require('../models/forecast');
 
 const Util = require('../util');
 
 const DaysController = {
   name: 'days',
   list: (req, res) => {
-    DayModel.find(function(err, days) {
+    DayModel.allSorted((err, days) => {
       if(err) res.send(err);
-      res.json(days.sort(function(a, b){
-        if(a.orderFromToday < b.orderFromToday) return -1;
-        if(a.orderFromToday > b.orderFromToday) return 1;
-        return 0;
-      }));
+      res.json(days);
     });
   },
   find: (req, res) => {
@@ -22,14 +19,34 @@ const DaysController = {
   },
   updateDays: () => {
     console.log('updating days...');
-    // Fetch a climate provider for relative humidity information on new york city
-    const start = Util.moment().subtract(2, 'days').valueOf();
-    const end = Util.moment().add(2, 'days').valueOf();
-    /*Util.fetch(
-      'http://history.openweathermap.org/data/2.5/history/city?id=5128638&type=hour&start='
-      + start + '&end=' + end + '&APPID=' + 'a09fb7dc6d406551630877c5b4b72cac' )
-      .then(res => res.json())
-	    .then(json => console.log('got: ', json));*/
+    DayModel.allSorted((err, days)=>{
+      if(!!err) console.log('error updating days');
+      else {
+        days.forEach(day => {
+          ForecastModel.forDay(day, (err, forecasts) => {
+            if(err) console.log('error retrieving day forecasts');
+            else {
+              if(forecasts.length > 0) {
+                let spread_forecasts = ForecastModel.spreadInCities(forecasts);
+                const mean_values = {
+                  ny: ForecastModel.meanValues(spread_forecasts.ny),
+                  tk: ForecastModel.meanValues(spread_forecasts.tk),
+                  sp: ForecastModel.meanValues(spread_forecasts.sp),
+                };
+                day.relativeHumidity = {};
+                day.relativeHumidity.ny = mean_values.ny.main_information.humidity;
+                day.relativeHumidity.tk = mean_values.tk.main_information.humidity;
+                day.relativeHumidity.sp = mean_values.sp.main_information.humidity;
+                day.save(err=> {
+                  if(err) console.log('error saving day in update days');
+                });
+              }
+            }
+          });
+        });
+        console.log('finished days updating');
+      }
+    });
   },
   turnDays: () => {
     DayModel.isVoid((err, isvoid)=>{

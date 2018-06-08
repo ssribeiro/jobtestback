@@ -2,14 +2,33 @@ const mongoose  = require('mongoose');
 const Schema  = mongoose.Schema;
 
 const DaySchema  = new Schema({
+    time_stamp: Number,
     day: Number,
     month: Number,
     weekday: String,
     orderFromToday: Number,
-    relativeHumidity: Number,
+    relativeHumidity: {
+      ny: Number,
+      tk: Number,
+      sp: Number,
+    },
 });
 
 const Util = require('../util');
+
+DaySchema.statics.allSorted = function(cb) {
+  this.find((err, days) => {
+    if(err) cb(err);
+    else {
+      let days_sorted = days.sort(function(a, b){
+        if(a.orderFromToday < b.orderFromToday) return -1;
+        if(a.orderFromToday > b.orderFromToday) return 1;
+        return 0;
+      });
+      cb(null, days_sorted);
+    }
+  });
+};
 
 DaySchema.statics.findByDay = function(day, cb) { return this.find({ day }, cb); };
 
@@ -29,12 +48,13 @@ DaySchema.statics.generateDays = function(cb) {
   for(let i=-2; i<=2; i++) {
     /* Fullfill day */
     const date = Util.moment().add(i, 'days');
+    const time_stamp = date.valueOf();
     const dayNumber = date.date();
     const month = date.month()+1;
     const weekday = Util.localeWeekName(date.weekday());
     const orderFromToday = i;
 
-    const day = { day: dayNumber, month, weekday, orderFromToday, relativeHumidity: null };
+    const day = { time_stamp, day: dayNumber, month, weekday, orderFromToday, relativeHumidity: null };
     days.push(new this(day));
   }
   days.forEach(day=>{
