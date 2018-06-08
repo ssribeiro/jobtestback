@@ -14,5 +14,7 @@ module.exports = {
       default: return 'sunday';
     }
   },
-  
+
+  fetch: require('node-fetch'),
+
 };
