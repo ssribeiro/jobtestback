@@ -21,11 +21,11 @@ const DaysController = {
     // Fetch a climate provider for relative humidity information on new york city
     const start = Util.moment().subtract(2, 'days').valueOf();
     const end = Util.moment().add(2, 'days').valueOf();
-    Util.fetch(
+    /*Util.fetch(
       'http://history.openweathermap.org/data/2.5/history/city?id=5128638&type=hour&start='
       + start + '&end=' + end + '&APPID=' + 'a09fb7dc6d406551630877c5b4b72cac' )
       .then(res => res.json())
-	    .then(json => console.log('got: ', json));
+	    .then(json => console.log('got: ', json));*/
   },
   turnDays: () => {
     DayModel.isVoid((err, isvoid)=>{
