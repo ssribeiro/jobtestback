@@ -23,7 +23,10 @@ mongoose.connect(
     // Start cronjobs
     const runningCronJobs = require('./app/cronjobs').start();
   }
-  else console.log('DB connection failure: ', err);
+  else {
+    console.log('DB connection failure: ', err);
+    process.exit(1);
+  }
 });
 
 // Apply Routes
